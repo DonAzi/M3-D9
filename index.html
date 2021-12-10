@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+      integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+      crossorigin="anonymous"
+    />
+    <style>
+      .nav-bar {
+        background-color: #131921;
+        color: white;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        object-fit: cover;
+        border-top: 2px solid gainsboro;
+        /* background-color: #eaeded; */
+      }
+      .row {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      input.inputs {
+        border-radius: 5px;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark nav-bar sticky-top">
+      <a class="navbar-brand mr-5" href="/">&PartialD;-store</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/demo.html"
+              >Stockroom <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/index.html">Back-office</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <h2 class="font-weight-bolder text-center my-5">Control Panel</h2>
+    <div class="container d-block-flex justify-content-lg-center mt-5">
+      <div class="row">
+        <div class="col-6 d-block align-content-center">
+          <input
+            class="w-100 m-2 inputs"
+            type="text"
+            placeholder="What is it.."
+            name="name"
+            id="name"
+          />
+
+          <form action="#">
+            <textarea
+              class="w-100 m-2"
+              placeholder="Describe your product..."
+              id="description"
+            ></textarea>
+          </form>
+          <input
+            class="w-100 m-2 inputs"
+            type="text"
+            placeholder="URL of your product.."
+            name="imageUrl"
+            id="imageUrl"
+          />
+          <input
+            class="w-100 m-2 inputs"
+            type="text"
+            placeholder="Brand of your prduct.."
+            name="brand"
+            id="brand"
+          />
+          <input
+            class="w-100 m-2 inputs"
+            type="text"
+            placeholder="Price of your product.."
+            name="price"
+            id="price"
+          />
+          <button
+            class="w-50 btn-group-sm btn-primary ml-2 w-100"
+            onclick="submitProduct()"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const submitProduct = async () => {
+        let product = {
+          name: document.querySelector("#name").value,
+          description: document.querySelector("#description").value,
+          imageUrl: document.querySelector("#imageUrl").value,
+          brand: document.querySelector("#brand").value,
+          price: document.querySelector("#price").value,
+        };
+
+        let response = await fetch(
+          "https://striveschool-api.herokuapp.com/api/product/",
+          {
+            method: "POST",
+            body: JSON.stringify(product),
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWIyMDAzOTY4YjNlMDAwMTViN2FjYjEiLCJpYXQiOjE2MzkwNTU0MTgsImV4cCI6MTY0MDI2NTAxOH0.XTaSP1lDIsQ_Ug_tZNsfvN_fuvKMP8Jx1AsQTiyG7VA",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          alert("success");
+        } else {
+          alert("failure to send product");
+        }
+
+        let reset = () => {
+          document.querySelector("#name").innerHTML = "";
+          document.querySelector("#description ").innerHTML = "";
+          document.querySelector("#imageUrl").innerHTML = "";
+          document.querySelector("#brand").innerHTML = "";
+          document.querySelector("#price").innerHTML = "";
+        };
+      };
+
+      //From the front end have a button that opens a details page
+      //on the details page have a button taht opens the back offic and sends the product id in the url
+      //in the back office have a conditional if the url has an id then the method in the subit fetch is "put" else it is post
+      //ALSO if there is an id in the url do a fetch for a single product
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

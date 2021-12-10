@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+      integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+      crossorigin="anonymous"
+    />
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        object-fit: cover;
+        border-top: 2px solid gainsboro;
+        border-bottom: 2px solid gainsboro;
+      }
+      .nav-bar {
+        background-color: #131921;
+        color: white;
+      }
+      .image {
+        height: 30vh;
+        width: 100%;
+      }
+    </style>
+    <title>Display</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark nav-bar sticky-top">
+      <a class="navbar-brand" href="/">&PartialD;-Store</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="demo.html"
+              >Stockroom<span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/index.html">Back-office</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container d-flex mt-5">
+      <hr />
+      <div id="for-row" class="row d-flex">
+        <!-- <div class="col"></div> -->
+      </div>
+    </div>
+
+    <script>
+      const displayForEdit = async (data) => {
+        const result = await fetch(
+          "https://striveschool-api.herokuapp.com/api/product/",
+          {
+            method: "GET",
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWIyMDAzOTY4YjNlMDAwMTViN2FjYjEiLCJpYXQiOjE2MzkwNTU0MTgsImV4cCI6MTY0MDI2NTAxOH0.XTaSP1lDIsQ_Ug_tZNsfvN_fuvKMP8Jx1AsQTiyG7VA",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (result.ok) {
+          const data = await result.json();
+          console.log("I am console inside the fetch Function", data);
+          return data;
+        }
+
+        console.log("checking the data", data);
+      };
+
+      const editFunction = async (data) => {
+        let row = document.getElementById("for-row");
+        row.innerHTML = "";
+
+        const product = await data
+          .map(
+            (item) =>
+              //
+              `<div class="card card-height mt-5 mb-2 ">
+                      <img src=${item.imageUrl} class="card-img-top image mt-3" >
+                      <div class="card-body">
+                        <div class=" mb-3 d-flex">
+                          <strong>
+                          ${item.brand}</strong>
+                          <span class="badge badge-secondary ml-2 d-flex align-items-center">
+                            £ ${item.price}
+                          </span>
+                        <a class="badge badge-warning ml-auto d-flex align-items-center" href="/display.html?id=${item._id}">Edit</a>
+                        <button class="btn btn-danger btn-sm ml-1">Delete</button>
+                      </div>
+                        <h5 class=>${item.name}</h5>
+                        <p class="card-text text-tranquit image">${item.description}</div>
+
+                    </div>
+                    `
+          )
+          .reverse()
+          .join("");
+
+        row.innerHTML = product;
+        displayForEdit(data);
+      };
+
+      //   row.innerHTML += col;
+
+      window.onload = async () => {
+        editFunction();
+      };
+    </script>
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

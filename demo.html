@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <html lang="en">
+      <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS -->
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+          crossorigin="anonymous"
+        />
+        <title>Demo</title>
+      </head>
+      <style>
+        body {
+          background-color: rgb(212, 212, 212);
+        }
+        .card-columns {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        .card-height {
+          width: 300px !important;
+          height: 400px;
+          overflow-y: hidden;
+          overflow-x: hidden;
+        }
+        .container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          overflow-x: hidden;
+          overflow-y: hidden;
+          object-fit: cover;
+          border-top: 2px solid gainsboro;
+          border-bottom: 2px solid gainsboro;
+        }
+        .nav-bar {
+          background-color: #131921;
+          color: white;
+        }
+        .image {
+          height: 30vh;
+          width: 100%;
+        }
+      </style>
+      <body>
+        <nav class="navbar navbar-expand-lg navbar-dark nav-bar sticky-top">
+          <a class="navbar-brand mr-5" href="/index.html">&PartialD;-store</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="/demo.html"
+                  >Stockroom<span class="sr-only">(current)</span></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/index.html">Back-office</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <h2 class="text-center font-weight-bolder mt-5">St&star;ck</h2>
+
+        <div class="container mt-5">
+          <div class="row">
+            <div class="card-columns"></div>
+          </div>
+        </div>
+
+        <script>
+          const displayProducts = (data) => {
+            const row = document.querySelector(".card-columns");
+            const product = `${data
+              .map(
+                (item) => `
+                  <div class="card card-height mt-5 mb-2 ">
+                      <img src=${item.imageUrl} class="card-img-top image mt-3" >
+                      <div class="card-body">
+                        <div class=" mb-3 d-flex">
+                          <strong>
+                          ${item.brand}</strong>
+                          <span class="badge badge-secondary ml-2 d-flex align-items-center">
+                            £ ${item.price}
+                          </span>
+                        <a class="badge badge-warning ml-auto d-flex align-items-center" href="/display.html?id=${item._id}">Edit</a>
+                        <button class="btn btn-danger btn-sm ml-1">Delete</button>
+                      </div>
+                        <h5 class=>${item.name}</h5>
+                        <p class="card-text text-tranquit image">${item.description}</div>
+
+                    </div>
+                    `
+              )
+              .reverse()
+              .join("")}
+                  `;
+
+            row.innerHTML = product;
+          };
+
+          const getItems = async () => {
+            const response = await fetch(
+              "https://striveschool-api.herokuapp.com/api/product/",
+              {
+                method: "GET",
+                headers: {
+                  Authorization:
+                    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWIyMDAzOTY4YjNlMDAwMTViN2FjYjEiLCJpYXQiOjE2MzkwNTU0MTgsImV4cCI6MTY0MDI2NTAxOH0.XTaSP1lDIsQ_Ug_tZNsfvN_fuvKMP8Jx1AsQTiyG7VA",
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            const data = await response.json();
+            displayProducts(data);
+          };
+
+          const deleteBtn = async () => {
+            //   const productID = new URLSearchParams()
+            const url = "https://striveschool-api.herokuapp.com/api/product/";
+            const response = await fetch(url);
+            if (response.ok) {
+              const events = await response.json();
+              console.log(events);
+            }
+          };
+          window.onload = () => {
+            getItems();
+          };
+        </script>
+        <script
+          src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+          integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+          crossorigin="anonymous"
+        ></script>
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+          crossorigin="anonymous"
+        ></script>
+      </body>
+    </html>
+  </head>
+</html>
